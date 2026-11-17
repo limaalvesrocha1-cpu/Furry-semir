@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d18">
+  <title>FURRY-SEMIR | Sua próxima aventura começa aqui</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080d18;
+      --panel: #101a2b;
+      --panel2: #142239;
+      --blue: #42a5ff;
+      --cyan: #73d7ff;
+      --purple: #a78bfa;
+      --white: #f4f8ff;
+      --muted: #a5b3c8;
+      --border: rgba(120,180,255,.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .55;
+    }
+
+    .navbar {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      width: 100%;
+      background: rgba(8,13,24,.86);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1150px;
+      margin: auto;
+      padding: 17px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: white;
+    }
+    .logo span { color: var(--blue); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-discord {
+      padding: 10px 16px;
+      border-radius: 9px;
+      background: var(--blue);
+      color: #06101e !important;
+      font-weight: 800;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      color: white;
+      border: 0;
+      font-size: 1.7rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 760px;
+      padding: 150px 24px 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+    .hero-content { max-width: 850px; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 15px;
+      border: 1px solid rgba(66,165,255,.35);
+      border-radius: 30px;
+      color: var(--cyan);
+      background: rgba(66,165,255,.08);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 12px #fbbf24;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: -4px;
+      line-height: 1.05;
+      background: linear-gradient(100deg, #fff 15%, #74c8ff 55%, #a78bfa 95%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 55px rgba(66,165,255,.12);
+    }
+    .hero p {
+      margin: 25px auto 32px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-weight: 800;
+      transition: .25s;
+      border: 1px solid transparent;
+    }
+    .btn:hover { transform: translateY(-4px); }
+    .btn-primary {
+      background: var(--blue);
+      color: #06101e;
+      box-shadow: 0 8px 30px rgba(66,165,255,.2);
+    }
+    .btn-secondary {
+      border-color: var(--border);
+      background: rgba(255,255,255,.04);
+    }
+    .btn-secondary:hover { border-color: var(--blue); }
+
+    .hero-bottom {
+      position: absolute;
+      bottom: 35px;
+      color: #71829b;
+      font-size: .8rem;
+      letter-spacing: 2px;
+    }
+
+    section { padding: 100px 24px; }
+    .container { max-width: 1100px; margin: auto; }
+    .section-tag {
+      color: var(--blue);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 17px;
+    }
+    .section-description {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 650px;
+    }
+    .center { text-align: center; }
+    .center .section-description { margin: auto; }
+
+    .about-box {
+      margin-top: 40px;
+      padding: 40px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(20,34,57,.9), rgba(16,26,43,.8));
+    }
+    .about-box h3 { font-size: 1.4rem; margin-bottom: 15px; }
+    .about-box p { color: var(--muted); line-height: 1.9; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 42px;
+    }
+    .card {
+      padding: 27px;
+      background: rgba(16,26,43,.85);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: .3s;
+    }
+    .card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(66,165,255,.55);
+      box-shadow: 0 15px 35px rgba(0,0,0,.2);
+    }
+    .card-icon { font-size: 2rem; margin-bottom: 18px; }
+    .card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      max-width: 760px;
+      margin: 42px auto 0;
+    }
+    .store-card {
+      padding: 32px;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: .3s;
+    }
+    .store-card:hover { transform: translateY(-6px); }
+    .store-card.premium { border-color: rgba(250,204,21,.4); }
+    .store-card.plus { border-color: rgba(66,165,255,.45); }
+    .store-card h3 { font-size: 1.8rem; margin: 14px 0; }
+    .premium h3 { color: #facc15; }
+    .plus h3 { color: var(--blue); }
+    .store-card p { color: var(--muted); line-height: 1.7; }
+    .price {
+      margin: 22px 0;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+    .store-card .btn { width: 100%; }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .team-member {
+      padding: 30px 20px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .team-avatar {
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 17px;
+      border-radius: 50%;
+      background: rgba(66,165,255,.12);
+      font-size: 1.8rem;
+    }
+    .team-member h3 { font-size: 1rem; margin-bottom: 8px; }
+    .team-member p { color: var(--blue); font-size: .85rem; }
+
+    .rules-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 40px;
+    }
+    .rule {
+      display: flex;
+      gap: 13px;
+      padding: 19px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .rule-icon { font-size: 1.25rem; }
+    .rule h3 { font-size: .95rem; margin-bottom: 6px; }
+    .rule p { color: var(--muted); font-size: .84rem; line-height: 1.6; }
+    .punishment {
+      margin-top: 24px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: .9rem;
+    }
+
+    .discord-section {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .discord-box {
+      max-width: 850px;
+      margin: auto;
+      padding: 55px 25px;
+      border: 1px solid rgba(66,165,255,.3);
+      border-radius: 22px;
+      background: radial-gradient(ellipse at top, rgba(66,165,255,.15), transparent 70%), var(--panel);
+    }
+    .discord-box h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 15px; }
+    .discord-box p { color: var(--muted); margin-bottom: 27px; line-height: 1.7; }
+
+    footer {
+      padding: 30px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: #7e8da4;
+      font-size: .85rem;
+      line-height: 1.8;
+    }
+    footer strong { color: var(--white); }
+
+    .mascot {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 30;
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 2px solid var(--blue);
+      background: var(--panel2);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 25px rgba(0,0,0,.4);
+      transition: .25s;
+      overflow: hidden;
+      font-size: 2rem;
+    }
+    .mascot:hover { transform: scale(1.08) rotate(-5deg); }
+    .mascot img { width: 100%; height: 100%; object-fit: cover; }
+    .mascot-message {
+      position: fixed;
+      right: 22px;
+      bottom: 108px;
+      z-index: 30;
+      max-width: 260px;
+      padding: 14px 17px;
+      border-radius: 13px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: white;
+      font-size: .85rem;
+      line-height: 1.5;
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: .25s;
+    }
+    .mascot-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 800px) {
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        padding: 22px;
+        background: #0b1322;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-discord { text-align: center; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hero { min-height: 680px; }
+      .hero h1 { letter-spacing: -2px; }
+      section { padding: 75px 18px; }
+      .cards, .store-grid, .rules-list { grid-template-columns: 1fr; }
+      .about-box { padding: 25px; }
+      .mascot { width: 62px; height: 62px; right: 14px; bottom: 14px; }
+      .mascot-message { right: 14px; bottom: 87px; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="particles"></canvas>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="#inicio">FURRY-<span>SEMIR</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+      <nav class="nav-links" id="navLinks">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#sistemas">Sistemas</a>
+        <a href="#loja">Loja</a>
+        <a href="#equipe">Equipe</a>
+        <a href="#regras">Regras</a>
+        <a class="nav-discord" href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Discord ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content reveal">
+        <div class="status"><span class="status-dot"></span> SERVIDOR EM PREPARAÇÃO</div>
+        <h1>FURRY-SEMIR</h1>
+        <p>Sua próxima aventura começa aqui. Explore, construa, lute e faça parte de uma comunidade cheia de possibilidades!</p>
+        <div class="buttons">
+          <a class="btn btn-primary" href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Entrar no Discord ↗</a>
+          <a class="btn btn-secondary" href="#sobre">Conhecer o servidor</a>
+        </div>
+        <p style="margin-top:25px;font-size:.85rem;">Java + Bedrock · Semi-anarquia · Inauguração em breve</p>
+      </div>
+      <div class="hero-bottom">SUA JORNADA COMEÇA EM BREVE</div>
+    </section>
+
+    <section id="sobre">
+      <div class="container reveal">
+        <div class="section-tag">Conheça nossa comunidade</div>
+        <h2 class="section-title">🐾 Por que fazer parte da nossa matilha?</h2>
+        <div class="about-box">
+          <h3>Estamos começando uma nova aventura! 🐺</h3>
+          <p>Um lugar para fazer amizades, explorar, construir, lutar e se divertir. Queremos você nessa jornada! 💜</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sistemas">
+      <div class="container">
+        <div class="center reveal">
+          <div class="section-tag">O que te espera</div>
+          <h2 class="section-title">Sistemas do servidor</h2>
+          <p class="section-description">Prepare-se para uma experiência cheia de possibilidades no mundo de Minecraft.</p>
+        </div>
+        <div class="cards">
+          <article class="card reveal"><div class="card-icon">⚔️</div><h3>PvP liberado</h3><p>Enfrente outros jogadores e prove suas habilidades.</p></article>
+          <article class="card reveal"><div class="card-icon">🏡</div><h3>Proteção de terrenos</h3><p>Proteja suas construções e cuide do seu espaço.</p></article>
+          <article class="card reveal"><div class="card-icon">🛡️</div><h3>Regras da comunidade</h3><p>Um ambiente organizado para todos aproveitarem.</p></article>
+          <article class="card reveal"><div class="card-icon">🐺</div><h3>Clãs</h3><p>Monte seu grupo, faça alianças e jogue em equipe.</p></article>
+          <article class="card reveal"><div class="card-icon">💰</div><h3>Economia</h3><p>Negocie, junte recursos e participe da economia.</p></article>
+          <article class="card reveal"><div class="card-icon">🛒</div><h3>Loja e eventos</h3><p>Confira novidades, itens e eventos da comunidade.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="loja">
+      <div class="container center">
+        <div class="section-tag reveal">Vantagens especiais</div>
+        <h2 class="section-title reveal">Loja do servidor</h2>
+        <p class="section-description reveal">Conheça nossos planos especiais. Preços e benefícios serão anunciados em breve.</p>
+        <div class="store-grid">
+          <article class="store-card premium reveal">
+            <div class="card-icon">👑</div>
+            <h3>Premium</h3>
+            <p>Um plano especial para quem quer aproveitar vantagens extras no servidor.</p>
+            <div class="price">Preço em breve</div>
+            <a class="btn btn-secondary" href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Saiba mais</a>
+          </article>
+          <article class="store-card plus reveal">
+            <div class="card-icon">💎</div>
+            <h3>Plus</h3>
+            <p>Mais uma opção especial para fazer parte da comunidade.</p>
+            <div class="price">Preço em breve</div>
+            <a class="btn btn-secondary" href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Saiba mais</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="equipe">
+      <div class="container center">
+        <div class="section-tag reveal">Quem cuida da comunidade</div>
+        <h2 class="section-title reveal">Nossa equipe</h2>
+        <p class="section-description reveal">Conheça algumas das pessoas responsáveis pelo FURRY-SEMIR.</p>
+        <div class="team-grid">
+          <article class="team-member reveal">
+            <div class="team-avatar">👑</div>
+            <h3>『Rudeus』Greyrat</h3>
+            <p>Dono</p>
+          </article>
+          <article class="team-member reveal">
+            <div class="team-avatar">⭐</div>
+            <h3>サムエル</h3>
+            <p>Braço direito</p>
+          </article>
+          <article class="team-member reveal">
+            <div class="team-avatar">⚔️</div>
+            <h3>KnightDBR</h3>
+            <p>OP Staff</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="regras">
+      <div class="container">
+        <div class="center reveal">
+          <div class="section-tag">Convivência</div>
+          <h2 class="section-title">Regras da comunidade</h2>
+          <p class="section-description">Estas regras valem para o Discord e para o Minecraft. Respeite todos e ajude a manter a comunidade agradável.</p>
+        </div>
+        <div class="rules-list">
+          <article class="rule reveal"><span class="rule-icon">🤝</span><div><h3>Respeito</h3><p>Respeite todos os membros. Não são permitidos insultos, preconceito, discriminação ou perseguição.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">🚫</span><div><h3>Proibido spam</h3><p>Evite flood, mensagens repetidas e excesso de marcações.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">💬</span><div><h3>Use os canais corretamente</h3><p>Envie mensagens nos canais correspondentes.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">🔞</span><div><h3>Conteúdo inadequado</h3><p>Não compartilhe conteúdo sexual explícito, violento ou impróprio.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">📢</span><div><h3>Divulgação</h3><p>Não divulgue outros servidores, lojas ou links sem autorização da staff.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">🛡️</span><div><h3>Respeite a staff</h3><p>Siga as orientações da equipe.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">⚠️</span><div><h3>Golpes e links suspeitos</h3><p>Não envie arquivos ou links maliciosos.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">💙</span><div><h3>Bom senso</h3><p>Ajude a manter o servidor seguro e agradável.</p></div></article>
+          <article class="rule reveal"><span class="rule-icon">⚖️</span><div><h3>Abuso de poder</h3><p>Staff e pessoas com cargos especiais não podem abusar de permissões, aplicar punições injustas ou usar cargos para benefício próprio.</p></div></article>
+        </div>
+        <p class="punishment reveal"><strong>⚠️ Punições:</strong> aviso, mute, kick ou ban, dependendo da gravidade da situação.<br>Ao permanecer no servidor, você concorda com estas regras.</p>
+      </div>
+    </section>
+
+    <section class="discord-section" id="discord">
+      <div class="discord-box reveal">
+        <div class="section-tag">Faça parte da matilha</div>
+        <h2>Vamos nessa aventura?</h2>
+        <p>Entre no nosso Discord para acompanhar novidades, conversar com a comunidade e ficar por dentro da inauguração!</p>
+        <a class="btn btn-primary" href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Entrar no Discord ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>FURRY-SEMIR</strong><br>
+    Sua próxima aventura começa aqui. 🐾<br>
+    <a href="https://discord.gg/xCe7aBYJn" target="_blank" rel="noopener">Nosso Discord</a><br>
+    © <span id="year"></span> FURRY-SEMIR. Todos os direitos reservados.
+  </footer>
+
+  <div class="mascot-message" id="mascotMessage" role="status"></div>
+  <button class="mascot" id="mascot" aria-label="Clique para conversar com o mascote">
+    <img src="mascot-feliz.png" alt="Mascote do FURRY-SEMIR" onerror="this.style.display='none';this.parentElement.textContent='🐾';">
+  </button>
+
+  <script>
+    // Menu para celulares
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => navLinks.classList.remove("open"));
+    });
+
+    // Ano automático no rodapé
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Frases do mascote
+    const phrases = [
+      "Opa! Bem-vindo(a) ao FURRY-SEMIR! 🐾",
+      "Já entrou no nosso Discord? 💙",
+      "Sua próxima aventura começa aqui! 🐺",
+      "Não esquece de conferir as regras, hein!",
+      "Chame seus amigos para fazer parte da matilha!",
+      "O servidor está sendo preparado. Aguarde novidades! ✨",
+      "Boa sorte na sua jornada pelo FURRY-SEMIR!"
+    ];
+
+    const mascot = document.getElementById("mascot");
+    const message = document.getElementById("mascotMessage");
+
+    mascot.addEventListener("click", () => {
+      const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+      message.textContent = phrase;
+      message.classList.add("show");
+    });
+
+    document.addEventListener("click", event => {
+      if (!mascot.contains(event.target) && !message.contains(event.target)) {
+        message.classList.remove("show");
+      }
+    });
+
+    // Animações ao aparecer na tela
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(element => observer.observe(element));
+
+    // Partículas azuis no fundo
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = Array.from({ length: Math.min(65, Math.floor(window.innerWidth / 18)) }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        speed: Math.random() * 0.35 + 0.1,
+        alpha: Math.random() * 0.55 + 0.15
+      }));
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.y -= p.speed;
+        if (p.y < -5) {
+          p.y = canvas.height + 5;
+          p.x = Math.random() * canvas.width;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(66,165,255,${p.alpha})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    animateParticles();
+  </script>
+</body>
+</html>
